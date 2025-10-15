@@ -183,10 +183,6 @@ This application is already deployed and available for immediate use at the live
 4. Add tests if applicable
 5. Submit a pull request
 
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## 🙏 Acknowledgments
 
 - **Felzenszwalb & Huttenlocher**: Original algorithm authors
