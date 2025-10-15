@@ -1,12 +1,10 @@
 # Image Segmentation Studio (FH Edition)
-### Overview
 Welcome to  the Image Segmentation Studio.
-
-- Repository: `https://github.com/AlexKalll/img-segmentation`
-- Core explanatory file: [The Interactive Jupyter Notebook ](https://github.com/AlexKalll/img-segmentation/blob/main/notebooks/fh-impl-final.ipynb) 
+### Overview
 
 Image Segmentation Studio is a Streamlit application for interactive image segmentation using the Felzenszwalb–Huttenlocher (FH) algorithm with the ease of Union-find data structure. 
 It supports multiple image sources, real-time parameter tuning, rich visualization, and downloadable results.
+- Core explanatory file: [The Interactive Jupyter Notebook ](https://github.com/AlexKalll/img-segmentation/blob/main/notebooks/fh-impl-final.ipynb) 
 
 ### Core Features
 
