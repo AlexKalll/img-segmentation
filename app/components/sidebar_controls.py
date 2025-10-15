@@ -152,68 +152,71 @@ def create_sidebar_controls():
     if selected_image is not None:
         selected_image = preprocess_image(selected_image, max_size=max_size)
     
-    # Segmentation Parameters Section
+    # Segmentation Parameters Section (no rerun until submit)
     st.sidebar.markdown("---")
-    st.sidebar.subheader("⚙️ Segmentation Parameters")
-    
-    # Parameter explanations
-    with st.sidebar.expander("ℹ️ Parameter Help"):
-        st.markdown("""
-        **k (Threshold Constant):**
-        - Controls the sensitivity of region merging
-        - Higher values → fewer, larger segments
-        - Lower values → more, smaller segments
-        - Range: 10-500
+    with st.sidebar.form("segmentation_parameters_form"):
+        st.subheader("⚙️ Segmentation Parameters")
         
-        **min_size (Minimum Region Size):**
-        - Minimum number of pixels per segment
-        - Prevents very small segments
-        - Range: 0-200
+        # Parameter explanations
+        with st.expander("ℹ️ Parameter Help"):
+            st.markdown("""
+            **k (Threshold Constant):**
+            - Controls the sensitivity of region merging
+            - Higher values → fewer, larger segments
+            - Lower values → more, smaller segments
+            - Range: 10-500
+            
+            **min_size (Minimum Region Size):**
+            - Minimum number of pixels per segment
+            - Prevents very small segments
+            - Range: 0-200
+            
+            **sigma (Gaussian Smoothing):**
+            - Preprocessing blur to reduce noise
+            - Higher values → more smoothing
+            - Range: 0.0-2.0
+            """)
         
-        **sigma (Gaussian Smoothing):**
-        - Preprocessing blur to reduce noise
-        - Higher values → more smoothing
-        - Range: 0.0-2.0
-        """)
-    
-    # Parameter sliders
-    k = st.sidebar.slider(
-        "k (Threshold Constant):",
-        min_value=10,
-        max_value=500,
-        value=st.session_state.controls_state['k'],
-        step=10,
-        help="Controls region merging sensitivity"
-    )
-    st.session_state.controls_state['k'] = k
-    
-    min_size = st.sidebar.slider(
-        "min_size (Minimum Region Size):",
-        min_value=0,
-        max_value=200,
-        value=st.session_state.controls_state['min_size'],
-        step=5,
-        help="Minimum pixels per segment"
-    )
-    st.session_state.controls_state['min_size'] = min_size
-    
-    sigma = st.sidebar.slider(
-        "sigma (Gaussian Smoothing):",
-        min_value=0.0,
-        max_value=2.0,
-        value=st.session_state.controls_state['sigma'],
-        step=0.1,
-        help="Preprocessing blur amount"
-    )
-    st.session_state.controls_state['sigma'] = sigma
-    
-    # Action Button
-    st.sidebar.markdown("---")
-    run_segmentation = st.sidebar.button(
-        "🚀 Run Segmentation",
-        type="primary",
-        help="Execute the Felzenszwalb-Huttenlocher algorithm"
-    )
+        # Parameter sliders
+        k = st.slider(
+            "k (Threshold Constant):",
+            min_value=10,
+            max_value=500,
+            value=st.session_state.controls_state['k'],
+            step=10,
+            help="Controls region merging sensitivity"
+        )
+        
+        min_size = st.slider(
+            "min_size (Minimum Region Size):",
+            min_value=0,
+            max_value=200,
+            value=st.session_state.controls_state['min_size'],
+            step=5,
+            help="Minimum pixels per segment"
+        )
+        
+        sigma = st.slider(
+            "sigma (Gaussian Smoothing):",
+            min_value=0.0,
+            max_value=2.0,
+            value=st.session_state.controls_state['sigma'],
+            step=0.1,
+            help="Preprocessing blur amount"
+        )
+        
+        st.markdown("---")
+        run_segmentation = st.form_submit_button(
+            "🚀 Run Segmentation",
+            type="primary",
+            help="Execute the Felzenszwalb-Huttenlocher algorithm"
+        )
+
+    # Only apply new parameter values when the form is submitted
+    if run_segmentation:
+        st.session_state.controls_state['k'] = k
+        st.session_state.controls_state['min_size'] = min_size
+        st.session_state.controls_state['sigma'] = sigma
     
     # Removed Current Settings display per request
     
