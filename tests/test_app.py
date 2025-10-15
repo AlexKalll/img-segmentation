@@ -6,8 +6,12 @@ import sys
 import os
 import numpy as np
 
-# Add src to path
-sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+SRC_DIR = os.path.join(PROJECT_ROOT, 'src')
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+if SRC_DIR not in sys.path:
+    sys.path.insert(0, SRC_DIR)
 
 def test_imports():
     """Test that all modules can be imported correctly."""
@@ -19,7 +23,7 @@ def test_imports():
         print("✅ All imports successful!")
         return True
     except ImportError as e:
-        print(f"❌ Import error: {e}")
+        print(f"Import error: {e}")
         return False
 
 def test_union_find():
@@ -37,7 +41,7 @@ def test_union_find():
         print("✅ UnionFind test passed!")
         return True
     except Exception as e:
-        print(f"❌ UnionFind test failed: {e}")
+        print(f"UnionFind test failed: {e}")
         return False
 
 def test_segmentation():
@@ -63,12 +67,12 @@ def test_segmentation():
         print(f"✅ Segmentation test passed! Found {num_segments} segments.")
         return True
     except Exception as e:
-        print(f"❌ Segmentation test failed: {e}")
+        print(f"Segmentation test failed: {e}")
         return False
 
 def main():
     """Run all tests."""
-    print("🧪 Testing Image Segmentation Studio components...")
+    print("Testing Image Segmentation Studio components...")
     print("=" * 50)
     
     tests = [
@@ -81,20 +85,17 @@ def main():
     total = len(tests)
     
     for test_name, test_func in tests:
-        print(f"\n🔍 Running {test_name}...")
+        print(f"\nRunning {test_name}...")
         if test_func():
             passed += 1
     
     print("\n" + "=" * 50)
-    print(f"📊 Test Results: {passed}/{total} tests passed")
+    print(f"Test Results: {passed}/{total} tests passed")
     
     if passed == total:
-        print("🎉 All tests passed! The application is ready to use.")
-        print("\n🚀 To run the Streamlit app:")
-        print("   streamlit run app/main.py")
-        print("\n🌐 Or double-click: app_run.bat")
+        print("All tests passed! The application is ready to use.")
     else:
-        print("⚠️ Some tests failed. Please check the errors above.")
+        print("Some tests failed. Please check the errors above.")
 
 if __name__ == "__main__":
     main()
