@@ -37,7 +37,7 @@ def main():
     """
     # Configure page
     st.set_page_config(
-        page_title="Image Segmentation Studio (FH Edition)",
+        page_title="Image Segmentation Studio",
         page_icon="🧩",
         layout="wide",
         initial_sidebar_state="expanded"
@@ -48,6 +48,7 @@ def main():
     
     # Create sidebar controls
     controls = create_sidebar_controls()
+    current_image_key = controls.get('image_key')
     
     # Display image information
     if controls['selected_image'] is not None:
@@ -58,20 +59,31 @@ def main():
     
     # Main content area
     if controls['selected_image'] is None:
-        st.warning("⚠️ Please select or upload an image to begin segmentation.")
+        st.warning("⚠️ Please select, upload or enter an image URL to begin segmentation.")
         display_algorithm_info()
         return
     
     # Display algorithm info
     display_algorithm_info()
     
-    # Run segmentation if requested
+    # Determine whether cached results match current image
+    cached_ok = False
+    if 'segmentation_results' in st.session_state and current_image_key:
+        cached_ok = st.session_state['segmentation_results'].get('image_key') == current_image_key
+
+    # If user changed/added a new image source, prompt to run instead of showing old results
+    if not cached_ok:
+        st.info("A new image is selected. Run segmentation to generate fresh results.")
+        body_run = st.button("🚀 Run Segmentation", type="primary", use_container_width=True)
+        if body_run or controls['run_segmentation']:
+            run_segmentation_analysis(controls)
+        return
+    
+    # If cached results are valid and no new run requested, show them
     if controls['run_segmentation']:
         run_segmentation_analysis(controls)
     else:
-        # Display any cached results only if not running new segmentation
-        if 'segmentation_results' in st.session_state:
-            display_cached_results()
+        display_cached_results()
 
 
 def run_segmentation_analysis(controls):
@@ -83,6 +95,7 @@ def run_segmentation_analysis(controls):
     """
     selected_image = controls['selected_image']
     parameters = controls['parameters']
+    image_key = controls.get('image_key')
     
     # Create progress indicators
     progress_bar, status_text = display_processing_progress()
@@ -115,7 +128,8 @@ def run_segmentation_analysis(controls):
             'segmented_image': segmented_image,
             'analysis_results': analysis_results,
             'parameters': parameters,
-            'timestamp': datetime.now()
+            'timestamp': datetime.now(),
+            'image_key': image_key
         }
         
         # Clear progress indicators

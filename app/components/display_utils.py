@@ -283,7 +283,7 @@ def display_app_header():
     """
     Display the main app header and description.
     """
-    st.title("🧩 Image Segmentation Studio (FH Edition)")
+    st.title("Image Segmentation Studio")
     st.markdown("""
     **Professional image segmentation using the Felzenszwalb-Huttenlocher algorithm**
     
