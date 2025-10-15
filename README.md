@@ -1,5 +1,7 @@
 # Image Segmentation Studio (FH Edition)
 
+👉 Live demo: https://img-seg.streamlit.app/
+
 A professional Streamlit application for interactive image segmentation using the Felzenszwalb-Huttenlocher algorithm.
 
 ## 🚀 Features
@@ -26,7 +28,7 @@ The **Felzenszwalb-Huttenlocher algorithm** is a graph-based image segmentation 
 
 1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/AlexKalll/img-segmentation.git
    cd img-segmentation
    ```
 
@@ -136,54 +138,7 @@ enableCORS = false
 
 ## 🚀 Deployment
 
-### Local Development
-
-```bash
-streamlit run app/main.py
-```
-
-### Streamlit Cloud
-
-1. **Push to GitHub**:
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit - FH Streamlit segmentation app"
-   git branch -M main
-   git remote add origin https://github.com/yourusername/img-segmentation.git
-   git push -u origin main
-   ```
-
-2. **Deploy on Streamlit Cloud**:
-   - Go to [streamlit.io/cloud](https://streamlit.io/cloud)
-   - Click "Deploy"
-   - Select your repository
-   - Set entry point to `app/main.py`
-   - Click "Deploy"
-
-### Docker Deployment
-
-Create a `Dockerfile`:
-
-```dockerfile
-FROM python:3.9-slim
-
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-
-COPY . .
-EXPOSE 8501
-
-CMD ["streamlit", "run", "app/main.py", "--server.address", "0.0.0.0"]
-```
-
-Build and run:
-
-```bash
-docker build -t img-segmentation .
-docker run -p 8501:8501 img-segmentation
-```
+This application is already deployed and available for immediate use at the live demo link above. For local development, see the Installation and Run sections.
 
 ## 📊 Algorithm Parameters
 
@@ -245,8 +200,6 @@ For questions, issues, or contributions, please:
 
 1. Check the [Issues](https://github.com/yourusername/img-segmentation/issues) page
 2. Create a new issue with detailed description
-3. Contact the development team
-
 ---
 
 **Image Segmentation Studio (FH Edition)** - Professional image segmentation made simple! 🧩✨
