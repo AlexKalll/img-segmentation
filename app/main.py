@@ -73,9 +73,14 @@ def main():
 
     # If user changed/added a new image source, prompt to run instead of showing old results
     if not cached_ok:
-        st.info("A new image is selected. Run segmentation to generate fresh results.")
-        body_run = st.button("🚀 Run Segmentation", type="primary", use_container_width=True)
+        prompt_placeholder = st.empty()
+        with prompt_placeholder.container():
+            if  not controls['run_segmentation']:
+                st.info("A new image is selected. Run segmentation to generate fresh results.")
+            body_run = st.button("🚀 Run Segmentation", type="primary", use_container_width=True)
         if body_run or controls['run_segmentation']:
+            # Clear the prompt so the button/text are removed when results render
+            prompt_placeholder.empty()
             run_segmentation_analysis(controls)
         return
     
