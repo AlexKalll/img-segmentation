@@ -77,7 +77,7 @@ def main():
         with prompt_placeholder.container():
             if  not controls['run_segmentation']:
                 st.info("A new image is selected. Run segmentation to generate fresh results.")
-            body_run = st.button("🚀 Run Segmentation", type="primary", use_container_width=True)
+            body_run = st.button("🚀 Run Segmentation", type="primary", width='stretch')
         if body_run or controls['run_segmentation']:
             # Clear the prompt so the button/text are removed when results render
             prompt_placeholder.empty()

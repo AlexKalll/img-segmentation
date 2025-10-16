@@ -123,7 +123,7 @@ def display_segment_gallery(analysis_results):
                 "Percentage": f"{(info['size'] / sum(analysis_results['component_sizes'].values())) * 100:.2f}%"
             })
         
-        st.dataframe(segment_data, use_container_width=True)
+        st.dataframe(segment_data, width='stretch')
     else:
         st.warning("No segments found to display.")
 
@@ -234,7 +234,7 @@ def display_parameter_comparison(comparison_results):
             "Max Size": stats['max_size']
         })
     
-    st.dataframe(comparison_data, use_container_width=True)
+    st.dataframe(comparison_data, width='stretch')
     
     # Create comparison plots
     from visualization import create_parameter_comparison_plot
