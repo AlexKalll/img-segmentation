@@ -1,0 +1,87 @@
+# -----------------------------------------------
+# 🌟 GitHub Actions: Continuous Delivery (CD)
+# Builds and publishes a Docker image of your app
+# -----------------------------------------------
+
+name: Build and publish Docker image
+
+# -----------------------------------------------
+# 🧠 Trigger conditions
+# Run this workflow when:
+# 1. You push to the main branch
+# 2. You create a version tag (e.g., v1.0.0)
+# -----------------------------------------------
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*.*.*' ]
+
+# -----------------------------------------------
+# 🔑 Permissions for GitHub Container Registry
+# -----------------------------------------------
+permissions:
+  contents: read
+  packages: write
+
+# -----------------------------------------------
+# 🧱 Define the job
+# -----------------------------------------------
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest  # use latest Ubuntu VM for building
+
+    steps:
+      # -------------------------------------------
+      # Step 1: Checkout your code
+      # -------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # -------------------------------------------
+      # Step 2: Extract metadata for tagging the Docker image
+      # Example: main branch → "latest", v1.0.0 tag → "v1.0.0"
+      # -------------------------------------------
+      - name: Extract metadata (tags, labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=sha
+
+      # -------------------------------------------
+      # Step 3: Set up QEMU (for cross-platform builds)
+      # -------------------------------------------
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      # -------------------------------------------
+      # Step 4: Set up Docker Buildx (for building images)
+      # -------------------------------------------
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # -------------------------------------------
+      # Step 5: Log in to GitHub Container Registry (GHCR)
+      # GitHub automatically provides a token for this.
+      # -------------------------------------------
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # -------------------------------------------
+      # Step 6: Build and push the Docker image
+      # "push: true" publishes it to GHCR
+      # -------------------------------------------
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .               # project root
+          push: true               # upload to registry
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
