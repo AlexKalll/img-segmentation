@@ -194,4 +194,4 @@ For questions, issues, or contributions, please:
 2. Create a new issue with detailed description
 ---
 
-**Image Segmentation Studio (FH Edition)** - Professional image segmentation made simple! 🧩✨
+**Image Segmentation Studio (FH-Edition)** - Professional image segmentation made simple! 🧩✨
